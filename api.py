@@ -18,17 +18,27 @@ def hola_mundo():
     }
 
     return respuesta
-
+# ----------------- Alumnos -------------------
 @app.get("/alumnos")
 def lista_alumnos(sesion:Session=Depends(generar_sesion)):
     print("Consultando todos los alumnos")
     return repo.devuelve_alumnos(sesion)
 
+@app.get("/alumnos/{id}")
+def alumno_por_id(id:int, sesion:Session=Depends(generar_sesion)):
+    print("Consultando los alumnos por id")
+    return repo.alumnos_por_id(sesion, id)
+# ----------------- Fotos -------------------
 @app.get("/fotos")
 def lista_fotos(sesion:Session=Depends(generar_sesion)):
     print("Consultando todas las fotos")
     return repo.devuelve_fotos(sesion)
 
+@app.get("/fotos/{id}")
+def foto_por_id(id:int, sesion:Session=Depends(generar_sesion)):
+    print("Consultando la foto por id")
+    return repo.fotos_por_id(sesion, id)
+# ----------------- Calificaciones -------------------
 @app.get("/calificaciones")
 def lista_calificaciones(sesion:Session=Depends(generar_sesion)):
     print("Consultando todas las calificaciones")
