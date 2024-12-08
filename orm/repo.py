@@ -20,22 +20,45 @@ def borrar_alumnos_por_id(sesion:Session, id_alumno: int):
     respuesta = {
         "mensaje":"Alumno eliminado"
     }
-    
 
 # ----------------- Fotos -------------------
 def devuelve_fotos(sesion:Session):
     print("select * from app.fotos")
     return sesion.query(modelos.Foto).all()
 
-def fotos_por_id(sesion:Session, id_fotos):
+def fotos_por_id(sesion:Session, id_fotos:int):
     print("select * from app.fotos where id = {id_fotos}")
     return sesion.query(modelos.Foto).filter(modelos.Foto.id == id_fotos).first()
 
-def fotos_por_id_alumno(sesion:Session, id_alumnos):
+def fotos_por_id_alumno(sesion:Session, id_alumnos:int):
     print("select * from app.fotos where id_alumnos = {id_alumnos}")
-    return sesion.query(modelos.Foto).filter(modelos.Foto.id_alumnos == id_alumnos).first()
+    return sesion.query(modelos.Foto).filter(modelos.Foto.id_alumnos == id_alumnos).all()
+
+def borrar_fotos_por_id_alumno(sesion:Session, id_alumnos:int):
+    print("delete from app.fotos where id_alumnos = {id_alumnos}")
+    fotos = fotos_por_id_alumno(sesion, id_alumnos)
+    if fotos is not None:
+        sesion.delete(fotos)
+        sesion.commit()
+    respuesta = {
+        "mensaje":"Fotos eliminadas"
+    }
 
 # ----------------- Calificaciones -------------------
 def devuelve_calificaciones(sesion:Session):
     print("select * from app.calificaciones")
     return sesion.query(modelos.Calificacion).all()
+
+def calificaciones_por_id_alumno(sesion:Session, id_alumnos:int):
+    print("select * from app.calificaciones where id_alumnos = {id_alumnos}")
+    return sesion.query(modelos.Calificacion).filter(modelos.Calificacion.id_alumnos == id_alumnos).all()
+
+def borrar_calificaciones_por_id_alumno(sesion:Session, id_alumnos:int):
+    print("delete from app.calificaciones where id_alumnos = {id_alumnos}")
+    calificaciones = calificaciones_por_id_alumno(sesion, id_alumnos)
+    if calificaciones is not None:
+        sesion.delete(calificaciones)
+        sesion.commit()
+    respuesta = {
+        "mensaje":"Calificaciones eliminadas"
+    }
