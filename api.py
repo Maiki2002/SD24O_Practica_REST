@@ -5,6 +5,7 @@ import shutil
 import os
 import uuid
 import orm.repo as repo
+import orm.esquemas as esquemas
 from sqlalchemy.orm import Session
 from orm.config import generar_sesion
 
@@ -59,6 +60,16 @@ def borrar_alumno_por_id(id:int, sesion:Session=Depends(generar_sesion)):
     return {
         "alumno borrado","ok"
     }
+
+@app.post("/alumnos")
+def guardar_alumno(alumno:esquemas.AlumnoBase, sesion:Session=Depends(generar_sesion)):
+    print(alumno)
+    repo.guardar_alumno(sesion,alumno)
+
+@app.put("/alumnos/{id}")
+def actualizar_alumno(id:int, alumno: esquemas.AlumnoBase, sesion:Session=Depends(generar_sesion)):
+ repo.actualiza_alumno(sesion, id, alumno)
+
 # ----------------- Fotos -------------------
 @app.get("/fotos/{id}")
 def foto_por_id(id:int, sesion:Session=Depends(generar_sesion)):
@@ -71,6 +82,14 @@ def borrar_foto_por_id(id:int, sesion:Session=Depends(generar_sesion)):
     return {
         "foto borrada","ok"
     }
+
+@app.post("/alumnos/{id}/fotos")
+def guardar_foto_por_id_alumno(id:int, foto: esquemas.FotoBase, sesion:Session=Depends(generar_sesion)):
+    repo.guardar_foto_por_id_alumno(sesion, id, foto)
+
+@app.put("/fotos/{id}")
+def actualizar_foto(id:int, foto: esquemas.FotoBase, sesion:Session=Depends(generar_sesion)):
+    repo.actualizar_foto(sesion, id, foto)
 # ----------------- Calificaciones -------------------
 @app.get("/calificaciones/{id}")
 def lista_calificaciones(id:int, sesion:Session=Depends(generar_sesion)):
@@ -83,3 +102,12 @@ def borrar_calificacion_por_id(id:int, sesion:Session=Depends(generar_sesion)):
     return {
         "calificacion borrada","ok"
     }
+
+@app.post("/alumnos/{id}/calificaciones")
+def guardar_calificacion(id:int,calificacion:esquemas.CalificacionBase, sesion:Session=Depends(generar_sesion)):
+    print(calificacion)
+    repo.guardar_calificaciones_por_id_alumno(sesion, id, calificacion)
+
+@app.put("/calificaciones/{id}")
+def actualizar_calificacion(id:int, calificacion: esquemas.CalificacionBase, sesion:Session=Depends(generar_sesion)):
+    repo.actualizar_calificacion(sesion, id, calificacion)
