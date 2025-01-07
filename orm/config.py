@@ -12,7 +12,7 @@ import os
 #})
 
 engine = create_engine(os.getenv("db_uri", "sqlite://base-ejemplo.db"))
-modelos.BaseClass.metadata.crete_all(engine)
+modelos.BaseClass.metadata.create_all(engine)
 
 SessionClass = sessionmaker(engine)
 
